@@ -1,0 +1,1232 @@
+[
+  {
+    "id": 1,
+    "cat": "breakfast",
+    "tr": "Serpme Kahvaltı",
+    "en": "Breakfast Spread",
+    "ru": "Турецкий завтрак на двоих",
+    "price": 600,
+    "pic": "breakfast",
+    "tag": "popular"
+  },
+  {
+    "id": 2,
+    "cat": "breakfast",
+    "tr": "Tabak Kahvaltı",
+    "en": "Plate Breakfast",
+    "ru": "Завтрак на тарелке",
+    "price": 450,
+    "pic": "breakfast",
+    "tag": ""
+  },
+  {
+    "id": 3,
+    "cat": "omelet",
+    "tr": "Sade Omlet",
+    "en": "Plain Omelet",
+    "ru": "Омлет классический",
+    "price": 200,
+    "pic": "breakfast",
+    "tag": ""
+  },
+  {
+    "id": 4,
+    "cat": "omelet",
+    "tr": "Peynirli Omlet",
+    "en": "Cheese Omelet",
+    "ru": "Омлет с сыром",
+    "price": 230,
+    "pic": "breakfast",
+    "tag": ""
+  },
+  {
+    "id": 5,
+    "cat": "omelet",
+    "tr": "Karışık Omlet",
+    "en": "Mixed Omelet",
+    "ru": "Омлет ассорти",
+    "price": 250,
+    "pic": "breakfast",
+    "tag": ""
+  },
+  {
+    "id": 6,
+    "cat": "omelet",
+    "tr": "Mantarlı Omlet",
+    "en": "Mushroom Omelet",
+    "ru": "Омлет с грибами",
+    "price": 230,
+    "pic": "breakfast",
+    "tag": ""
+  },
+  {
+    "id": 7,
+    "cat": "sandwich",
+    "tr": "Beyaz Peynirli Sandviç",
+    "en": "Feta Cheese Sandwich",
+    "ru": "Сэндвич с сыром фета",
+    "price": 250,
+    "pic": "sandwich",
+    "tag": ""
+  },
+  {
+    "id": 8,
+    "cat": "sandwich",
+    "tr": "Tavuklu Sandviç",
+    "en": "Chicken Sandwich",
+    "ru": "Сэндвич с курицей",
+    "price": 300,
+    "pic": "sandwich",
+    "tag": ""
+  },
+  {
+    "id": 9,
+    "cat": "sandwich",
+    "tr": "Köfte Sandviç",
+    "en": "Meatball Sandwich",
+    "ru": "Сэндвич с кёфте",
+    "price": 350,
+    "pic": "sandwich",
+    "tag": ""
+  },
+  {
+    "id": 10,
+    "cat": "sandwich",
+    "tr": "Tonbalıklı Sandviç",
+    "en": "Tuna Sandwich",
+    "ru": "Сэндвич с тунцом",
+    "price": 350,
+    "pic": "sandwich",
+    "tag": ""
+  },
+  {
+    "id": 11,
+    "cat": "toast",
+    "tr": "Peynirli Tost",
+    "en": "Cheese Toast",
+    "ru": "Тост с сыром",
+    "price": 230,
+    "pic": "sandwich",
+    "tag": ""
+  },
+  {
+    "id": 12,
+    "cat": "toast",
+    "tr": "Salamlı Tost",
+    "en": "Salami Toast",
+    "ru": "Тост с салями",
+    "price": 230,
+    "pic": "sandwich",
+    "tag": ""
+  },
+  {
+    "id": 13,
+    "cat": "toast",
+    "tr": "Karışık Tost",
+    "en": "Mixed Toast",
+    "ru": "Тост ассорти",
+    "price": 250,
+    "pic": "sandwich",
+    "tag": ""
+  },
+  {
+    "id": 14,
+    "cat": "snack",
+    "tr": "Günün Çorbası",
+    "en": "Soup of the Day",
+    "ru": "Суп дня",
+    "price": 200,
+    "pic": "snack",
+    "tag": ""
+  },
+  {
+    "id": 15,
+    "cat": "snack",
+    "tr": "Atıştırma Sepeti",
+    "en": "Snack Basket",
+    "ru": "Корзина закусок",
+    "price": 400,
+    "pic": "snack",
+    "tag": "popular"
+  },
+  {
+    "id": 16,
+    "cat": "snack",
+    "tr": "Cips",
+    "en": "Chips",
+    "ru": "Картофель фри",
+    "price": 200,
+    "pic": "snack",
+    "tag": ""
+  },
+  {
+    "id": 17,
+    "cat": "snack",
+    "tr": "Karides Sote",
+    "en": "Shrimp Sautéed",
+    "ru": "Креветки с маслом и чесноком",
+    "price": 850,
+    "pic": "seafood",
+    "tag": ""
+  },
+  {
+    "id": 18,
+    "cat": "snack",
+    "tr": "Kalamar Tava",
+    "en": "Pan Squid",
+    "ru": "Кальмары в панировке",
+    "price": 750,
+    "pic": "seafood",
+    "tag": ""
+  },
+  {
+    "id": 19,
+    "cat": "snack",
+    "tr": "Mantar Güveç",
+    "en": "Mushroom Casserole",
+    "ru": "Грибная запеканка",
+    "price": 300,
+    "pic": "snack",
+    "tag": ""
+  },
+  {
+    "id": 20,
+    "cat": "snack",
+    "tr": "Nachos",
+    "en": "Nachos",
+    "ru": "Начос",
+    "price": 300,
+    "pic": "snack",
+    "tag": ""
+  },
+  {
+    "id": 21,
+    "cat": "snack",
+    "tr": "Sigara Böreği",
+    "en": "Spring Roll",
+    "ru": "Сигара бёрек",
+    "price": 300,
+    "pic": "snack",
+    "tag": ""
+  },
+  {
+    "id": 22,
+    "cat": "snack",
+    "tr": "Soğan Halkası",
+    "en": "Onion Rings",
+    "ru": "Луковые кольца",
+    "price": 200,
+    "pic": "snack",
+    "tag": ""
+  },
+  {
+    "id": 23,
+    "cat": "salad",
+    "tr": "Çoban Salatası",
+    "en": "Shepherd's Salad",
+    "ru": "Пастуший салат",
+    "price": 200,
+    "pic": "salad",
+    "tag": ""
+  },
+  {
+    "id": 24,
+    "cat": "salad",
+    "tr": "Avakado Salata",
+    "en": "Avocado Salad",
+    "ru": "Салат с авокадо",
+    "price": 300,
+    "pic": "salad",
+    "tag": ""
+  },
+  {
+    "id": 25,
+    "cat": "salad",
+    "tr": "Etli Salata",
+    "en": "Meat Salad",
+    "ru": "Мясной салат",
+    "price": 600,
+    "pic": "salad",
+    "tag": ""
+  },
+  {
+    "id": 26,
+    "cat": "salad",
+    "tr": "Tavuk Salata",
+    "en": "Chicken Salad",
+    "ru": "Салат с курицей",
+    "price": 400,
+    "pic": "salad",
+    "tag": ""
+  },
+  {
+    "id": 27,
+    "cat": "salad",
+    "tr": "Tonbalıklı Salata",
+    "en": "Tuna Salad",
+    "ru": "Салат с тунцом",
+    "price": 450,
+    "pic": "salad",
+    "tag": ""
+  },
+  {
+    "id": 28,
+    "cat": "salad",
+    "tr": "Karides Salata",
+    "en": "Shrimp Salad",
+    "ru": "Салат с креветками",
+    "price": 700,
+    "pic": "salad",
+    "tag": ""
+  },
+  {
+    "id": 29,
+    "cat": "pasta",
+    "tr": "S. Napolitan",
+    "en": "Spaghetti Napolitan",
+    "ru": "Спагетти Наполитан",
+    "price": 400,
+    "pic": "pasta",
+    "tag": ""
+  },
+  {
+    "id": 30,
+    "cat": "pasta",
+    "tr": "S. Bolonez",
+    "en": "Spaghetti Bolognese",
+    "ru": "Спагетти Болоньезе",
+    "price": 550,
+    "pic": "pasta",
+    "tag": "popular"
+  },
+  {
+    "id": 31,
+    "cat": "pasta",
+    "tr": "Fettuccini",
+    "en": "Fettuccine",
+    "ru": "Феттучини",
+    "price": 450,
+    "pic": "pasta",
+    "tag": ""
+  },
+  {
+    "id": 32,
+    "cat": "pasta",
+    "tr": "Penne Pesta",
+    "en": "Penne Pesto",
+    "ru": "Пенне песто",
+    "price": 450,
+    "pic": "pasta",
+    "tag": ""
+  },
+  {
+    "id": 33,
+    "cat": "pasta",
+    "tr": "Mantı",
+    "en": "Ravioli",
+    "ru": "Манты / равиоли",
+    "price": 400,
+    "pic": "pasta",
+    "tag": ""
+  },
+  {
+    "id": 34,
+    "cat": "pizza",
+    "tr": "Margarita Pizza",
+    "en": "Margherita Pizza",
+    "ru": "Пицца Маргарита",
+    "price": 400,
+    "pic": "pizza",
+    "tag": "popular"
+  },
+  {
+    "id": 35,
+    "cat": "pizza",
+    "tr": "Salamlı Pizza",
+    "en": "Salami Pizza",
+    "ru": "Пицца с салями",
+    "price": 450,
+    "pic": "pizza",
+    "tag": ""
+  },
+  {
+    "id": 36,
+    "cat": "pizza",
+    "tr": "Alaturka Pizza",
+    "en": "Alaturka Pizza",
+    "ru": "Пицца Алатурка",
+    "price": 550,
+    "pic": "pizza",
+    "tag": ""
+  },
+  {
+    "id": 37,
+    "cat": "pizza",
+    "tr": "Deniz Ürünleri Pizza",
+    "en": "Seafood Pizza",
+    "ru": "Пицца с морепродуктами",
+    "price": 550,
+    "pic": "pizza",
+    "tag": ""
+  },
+  {
+    "id": 38,
+    "cat": "pizza",
+    "tr": "Pizza Hawaii",
+    "en": "Hawaiian Pizza",
+    "ru": "Пицца Гавайи",
+    "price": 500,
+    "pic": "pizza",
+    "tag": ""
+  },
+  {
+    "id": 39,
+    "cat": "burger",
+    "tr": "Hamburger",
+    "en": "Hamburger",
+    "ru": "Гамбургер",
+    "price": 450,
+    "pic": "burger",
+    "tag": "popular"
+  },
+  {
+    "id": 40,
+    "cat": "burger",
+    "tr": "Cheese Burger",
+    "en": "Cheeseburger",
+    "ru": "Чизбургер",
+    "price": 500,
+    "pic": "burger",
+    "tag": ""
+  },
+  {
+    "id": 41,
+    "cat": "burger",
+    "tr": "Sefa Burger",
+    "en": "Sefa Burger",
+    "ru": "Фирменный бургер Sefa",
+    "price": 600,
+    "pic": "burger",
+    "tag": "signature"
+  },
+  {
+    "id": 42,
+    "cat": "chicken",
+    "tr": "Tavuk Şiş",
+    "en": "Chicken Skewer",
+    "ru": "Куриный шашлык",
+    "price": 450,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 43,
+    "cat": "chicken",
+    "tr": "Tavuk Izgara",
+    "en": "Grilled Chicken",
+    "ru": "Курица на гриле",
+    "price": 450,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 44,
+    "cat": "chicken",
+    "tr": "Tavuk Pirzola",
+    "en": "Chicken Chops",
+    "ru": "Куриные отбивные",
+    "price": 450,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 45,
+    "cat": "chicken",
+    "tr": "Tavuk Kanat",
+    "en": "Chicken Wings",
+    "ru": "Куриные крылышки",
+    "price": 500,
+    "pic": "chicken",
+    "tag": "popular"
+  },
+  {
+    "id": 46,
+    "cat": "chicken",
+    "tr": "Tavuk Köri",
+    "en": "Chicken Curry",
+    "ru": "Курица карри",
+    "price": 500,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 47,
+    "cat": "chicken",
+    "tr": "Fesleğen Soslu Tavuk",
+    "en": "Chicken with Basil Sauce",
+    "ru": "Курица с базиликовым соусом",
+    "price": 500,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 48,
+    "cat": "chicken",
+    "tr": "Barbekü Soslu Tavuk",
+    "en": "Chicken with BBQ Sauce",
+    "ru": "Курица с соусом барбекю",
+    "price": 500,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 49,
+    "cat": "chicken",
+    "tr": "Acı & Tatlı Tavuk",
+    "en": "Bitter & Sweet Chicken",
+    "ru": "Курица в кисло-сладком соусе",
+    "price": 500,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 50,
+    "cat": "chicken",
+    "tr": "Tavuk Sote",
+    "en": "Chicken Sautéed",
+    "ru": "Куриное соте",
+    "price": 500,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 51,
+    "cat": "chicken",
+    "tr": "Tavuk Wrap",
+    "en": "Chicken Wrap",
+    "ru": "Ролл с курицей",
+    "price": 450,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 52,
+    "cat": "chicken",
+    "tr": "Vejetaryan Güveç",
+    "en": "Vegetarian Casserole",
+    "ru": "Вегетарианская запеканка",
+    "price": 450,
+    "pic": "veggie",
+    "tag": ""
+  },
+  {
+    "id": 53,
+    "cat": "steak",
+    "tr": "Barnez Soslu Antrikot",
+    "en": "Entrecôte with Béarnaise Sauce",
+    "ru": "Антрекот с соусом Бернез",
+    "price": 950,
+    "pic": "steak",
+    "tag": "signature"
+  },
+  {
+    "id": 54,
+    "cat": "steak",
+    "tr": "Biberli Steak",
+    "en": "Pepper Steak",
+    "ru": "Стейк с перцем",
+    "price": 950,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 55,
+    "cat": "steak",
+    "tr": "Mantarlı Steak",
+    "en": "Mushroom Steak",
+    "ru": "Грибной стейк",
+    "price": 950,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 56,
+    "cat": "steak",
+    "tr": "Hawai Steak",
+    "en": "Hawaiian Steak",
+    "ru": "Гавайский стейк",
+    "price": 950,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 57,
+    "cat": "meat",
+    "tr": "Et Şiş",
+    "en": "Meat Skewer",
+    "ru": "Мясной шашлык",
+    "price": 650,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 58,
+    "cat": "meat",
+    "tr": "Kuzu Pirzola",
+    "en": "Lamb Chops",
+    "ru": "Бараньи отбивные",
+    "price": 750,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 59,
+    "cat": "meat",
+    "tr": "Saç Kavurma",
+    "en": "Roasting Hair",
+    "ru": "Мясная сковорода",
+    "price": 600,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 60,
+    "cat": "meat",
+    "tr": "Et Güveç",
+    "en": "Meat Casserole",
+    "ru": "Мясная запеканка",
+    "price": 600,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 61,
+    "cat": "meat",
+    "tr": "Kuzu İncik",
+    "en": "Lamb Shank",
+    "ru": "Голень ягнёнка",
+    "price": 900,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 62,
+    "cat": "meat",
+    "tr": "Köfte Izgara",
+    "en": "Grilled Meatballs",
+    "ru": "Кёфте на гриле",
+    "price": 550,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 63,
+    "cat": "meat",
+    "tr": "Akdeniz Kebap",
+    "en": "Mediterranean Kebab",
+    "ru": "Средиземноморский кебаб",
+    "price": 800,
+    "pic": "steak",
+    "tag": "signature"
+  },
+  {
+    "id": 64,
+    "cat": "meat",
+    "tr": "Adana Kebap",
+    "en": "Adana Kebab",
+    "ru": "Адана кебаб",
+    "price": 570,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 65,
+    "cat": "meat",
+    "tr": "Patlıcan Kebap",
+    "en": "Aubergine Kebab",
+    "ru": "Баклажан кебаб",
+    "price": 600,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 66,
+    "cat": "meat",
+    "tr": "Etli Wrap",
+    "en": "Meat Wrap",
+    "ru": "Ролл с мясом",
+    "price": 600,
+    "pic": "sandwich",
+    "tag": ""
+  },
+  {
+    "id": 67,
+    "cat": "meat",
+    "tr": "Sefa Beach Special",
+    "en": "Sefa Beach Special",
+    "ru": "Фирменное блюдо Sefa Beach",
+    "price": 1200,
+    "pic": "steak",
+    "tag": "signature"
+  },
+  {
+    "id": 68,
+    "cat": "meat",
+    "tr": "Karışık Izgara",
+    "en": "Mixed Grill",
+    "ru": "Смешанный гриль",
+    "price": 850,
+    "pic": "steak",
+    "tag": "popular"
+  },
+  {
+    "id": 69,
+    "cat": "meat",
+    "tr": "Hindi Şiş",
+    "en": "Turkey Skewer",
+    "ru": "Шашлык из индейки",
+    "price": null,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 70,
+    "cat": "mexican",
+    "tr": "Fajita Et",
+    "en": "Meat Fajita",
+    "ru": "Мясной фахитас",
+    "price": 800,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 71,
+    "cat": "mexican",
+    "tr": "Fajita Tavuk",
+    "en": "Chicken Fajita",
+    "ru": "Куриный фахитас",
+    "price": 600,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 72,
+    "cat": "mexican",
+    "tr": "Fajita Combo",
+    "en": "Fajita Combo",
+    "ru": "Фахитас комбо: мясо, курица, креветки",
+    "price": 900,
+    "pic": "steak",
+    "tag": "signature"
+  },
+  {
+    "id": 73,
+    "cat": "mexican",
+    "tr": "Mexican Steak",
+    "en": "Mexican Steak",
+    "ru": "Мексиканский стейк",
+    "price": 850,
+    "pic": "steak",
+    "tag": ""
+  },
+  {
+    "id": 74,
+    "cat": "seafood",
+    "tr": "Çupra",
+    "en": "Sea Bream",
+    "ru": "Дорадо",
+    "price": 650,
+    "pic": "seafood",
+    "tag": "popular"
+  },
+  {
+    "id": 75,
+    "cat": "seafood",
+    "tr": "Levrek",
+    "en": "Sea Bass",
+    "ru": "Сибас",
+    "price": 700,
+    "pic": "seafood",
+    "tag": ""
+  },
+  {
+    "id": 76,
+    "cat": "seafood",
+    "tr": "Somon Izgara",
+    "en": "Grilled Salmon",
+    "ru": "Лосось на гриле",
+    "price": 700,
+    "pic": "seafood",
+    "tag": ""
+  },
+  {
+    "id": 77,
+    "cat": "seafood",
+    "tr": "Jumbo Karides",
+    "en": "Jumbo Shrimp",
+    "ru": "Королевские креветки",
+    "price": 1000,
+    "pic": "seafood",
+    "tag": "signature"
+  },
+  {
+    "id": 78,
+    "cat": "seafood",
+    "tr": "Karides Sote",
+    "en": "Shrimp Sautéed",
+    "ru": "Креветки соте",
+    "price": 750,
+    "pic": "seafood",
+    "tag": ""
+  },
+  {
+    "id": 79,
+    "cat": "seafood",
+    "tr": "Mevsim Balıkları",
+    "en": "Seasonal Fish",
+    "ru": "Сезонная рыба",
+    "price": null,
+    "pic": "seafood",
+    "tag": ""
+  },
+  {
+    "id": 80,
+    "cat": "kids",
+    "tr": "2'li Mini Burger",
+    "en": "2 Mini Burgers",
+    "ru": "Два мини-бургера",
+    "price": 300,
+    "pic": "burger",
+    "tag": ""
+  },
+  {
+    "id": 81,
+    "cat": "kids",
+    "tr": "Tavuk Nugget",
+    "en": "Chicken Nuggets",
+    "ru": "Куриные наггетсы",
+    "price": 250,
+    "pic": "chicken",
+    "tag": ""
+  },
+  {
+    "id": 82,
+    "cat": "kids",
+    "tr": "Balık Parmak",
+    "en": "Fish Fingers",
+    "ru": "Рыбные палочки",
+    "price": 300,
+    "pic": "seafood",
+    "tag": ""
+  },
+  {
+    "id": 83,
+    "cat": "kids",
+    "tr": "Köfte Spagetti",
+    "en": "Meatball Spaghetti",
+    "ru": "Спагетти с фрикадельками",
+    "price": 300,
+    "pic": "pasta",
+    "tag": ""
+  },
+  {
+    "id": 84,
+    "cat": "dessert",
+    "tr": "Çikolata Şelalesi",
+    "en": "Chocolate Fall",
+    "ru": "Шоколадный фонтан",
+    "price": null,
+    "pic": "dessert",
+    "tag": ""
+  },
+  {
+    "id": 85,
+    "cat": "dessert",
+    "tr": "Sütlaç",
+    "en": "Rice Pudding",
+    "ru": "Рисовый пудинг",
+    "price": null,
+    "pic": "dessert",
+    "tag": ""
+  },
+  {
+    "id": 86,
+    "cat": "dessert",
+    "tr": "Günün Tatlısı",
+    "en": "Dessert of the Day",
+    "ru": "Десерт дня",
+    "price": null,
+    "pic": "dessert",
+    "tag": ""
+  },
+  {
+    "id": 87,
+    "cat": "cold",
+    "tr": "Su Küçük",
+    "en": "Water / Su (small)",
+    "ru": "Вода маленькая",
+    "price": 35,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 88,
+    "cat": "cold",
+    "tr": "Su Büyük",
+    "en": "Water / Su (large)",
+    "ru": "Вода большая",
+    "price": 60,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 89,
+    "cat": "cold",
+    "tr": "Cola / Fanta / Sprite",
+    "en": "Cola / Fanta / Sprite",
+    "ru": "Кола / Фанта / Спрайт",
+    "price": 100,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 90,
+    "cat": "cold",
+    "tr": "Portakal Suyu",
+    "en": "Fresh Orange Juice",
+    "ru": "Свежевыжатый апельсиновый сок",
+    "price": 150,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 91,
+    "cat": "cold",
+    "tr": "Red Bull",
+    "en": "Red Bull",
+    "ru": "Ред Булл",
+    "price": 150,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 92,
+    "cat": "cold",
+    "tr": "Tonic Water",
+    "en": "Tonic Water",
+    "ru": "Тоник",
+    "price": 100,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 93,
+    "cat": "cold",
+    "tr": "Soda Küçük",
+    "en": "Soda (small)",
+    "ru": "Содовая маленькая",
+    "price": 45,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 94,
+    "cat": "cold",
+    "tr": "Soda Büyük",
+    "en": "Soda (large)",
+    "ru": "Содовая большая",
+    "price": 60,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 95,
+    "cat": "cold",
+    "tr": "Limonata",
+    "en": "Lemonade",
+    "ru": "Лимонад",
+    "price": 100,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 96,
+    "cat": "cold",
+    "tr": "Ice Tea",
+    "en": "Ice Tea",
+    "ru": "Холодный чай",
+    "price": 100,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 97,
+    "cat": "cold",
+    "tr": "Şalgam",
+    "en": "Turnip Juice",
+    "ru": "Шалгам",
+    "price": 70,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 98,
+    "cat": "cold",
+    "tr": "Ayran",
+    "en": "Ayran",
+    "ru": "Айран",
+    "price": 80,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 99,
+    "cat": "coffee",
+    "tr": "Ice Americano",
+    "en": "Iced Americano",
+    "ru": "Айс американо",
+    "price": 140,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 100,
+    "cat": "coffee",
+    "tr": "Ice Coffee",
+    "en": "Iced Coffee",
+    "ru": "Айс кофе",
+    "price": 150,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 101,
+    "cat": "coffee",
+    "tr": "Ice Caramel Latte",
+    "en": "Iced Caramel Latte",
+    "ru": "Айс карамель латте",
+    "price": 150,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 102,
+    "cat": "coffee",
+    "tr": "Ice Mocha",
+    "en": "Iced Mocha",
+    "ru": "Айс мокка",
+    "price": 150,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 103,
+    "cat": "shake",
+    "tr": "Çilekli Milkshake",
+    "en": "Strawberry Milkshake",
+    "ru": "Клубничный милкшейк",
+    "price": 150,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 104,
+    "cat": "shake",
+    "tr": "Muzlu Milkshake",
+    "en": "Banana Milkshake",
+    "ru": "Банановый милкшейк",
+    "price": 150,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 105,
+    "cat": "shake",
+    "tr": "Vanilyalı Milkshake",
+    "en": "Vanilla Milkshake",
+    "ru": "Ванильный милкшейк",
+    "price": 150,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 106,
+    "cat": "shake",
+    "tr": "Çikolatalı Milkshake",
+    "en": "Chocolate Milkshake",
+    "ru": "Шоколадный милкшейк",
+    "price": 150,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 107,
+    "cat": "shake",
+    "tr": "Karamelli Milkshake",
+    "en": "Caramel Milkshake",
+    "ru": "Карамельный милкшейк",
+    "price": 150,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 108,
+    "cat": "frozen",
+    "tr": "Çilek Frozen",
+    "en": "Strawberry Frozen",
+    "ru": "Фрозен: Клубника",
+    "price": 140,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 109,
+    "cat": "frozen",
+    "tr": "Muz Frozen",
+    "en": "Banana Frozen",
+    "ru": "Фрозен: Банан",
+    "price": 140,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 110,
+    "cat": "frozen",
+    "tr": "Mango Frozen",
+    "en": "Mango Frozen",
+    "ru": "Фрозен: Манго",
+    "price": 140,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 111,
+    "cat": "frozen",
+    "tr": "Çarkıfelek Meyvesi Frozen",
+    "en": "Passion Fruit Frozen",
+    "ru": "Фрозен: Маракуйя",
+    "price": 140,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 112,
+    "cat": "frozen",
+    "tr": "Şeftali Frozen",
+    "en": "Peach Frozen",
+    "ru": "Фрозен: Персик",
+    "price": 140,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 113,
+    "cat": "frozen",
+    "tr": "Kavun / Karpuz Frozen",
+    "en": "Melon / Watermelon Frozen",
+    "ru": "Фрозен: Дыня / арбуз",
+    "price": 140,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 114,
+    "cat": "frozen",
+    "tr": "Orman Meyveleri Frozen",
+    "en": "Blueberry Frozen",
+    "ru": "Фрозен: Ягодный микс",
+    "price": 140,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 115,
+    "cat": "frozen",
+    "tr": "Kivi Frozen",
+    "en": "Kiwi Frozen",
+    "ru": "Фрозен: Киви",
+    "price": 140,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 116,
+    "cat": "frozen",
+    "tr": "Elma Frozen",
+    "en": "Apple Frozen",
+    "ru": "Фрозен: Яблоко",
+    "price": 140,
+    "pic": "drink",
+    "tag": ""
+  },
+  {
+    "id": 117,
+    "cat": "hot",
+    "tr": "Çay",
+    "en": "Turkish Tea",
+    "ru": "Турецкий чай",
+    "price": 35,
+    "pic": "coffee",
+    "tag": ""
+  },
+  {
+    "id": 118,
+    "cat": "hot",
+    "tr": "Türk Kahvesi",
+    "en": "Turkish Coffee",
+    "ru": "Кофе по-турецки",
+    "price": 100,
+    "pic": "coffee",
+    "tag": ""
+  },
+  {
+    "id": 119,
+    "cat": "hot",
+    "tr": "Americano",
+    "en": "Americano",
+    "ru": "Американо",
+    "price": 140,
+    "pic": "coffee",
+    "tag": ""
+  },
+  {
+    "id": 120,
+    "cat": "hot",
+    "tr": "Espresso",
+    "en": "Espresso",
+    "ru": "Эспрессо",
+    "price": 100,
+    "pic": "coffee",
+    "tag": ""
+  },
+  {
+    "id": 121,
+    "cat": "hot",
+    "tr": "Cappuccino",
+    "en": "Cappuccino",
+    "ru": "Капучино",
+    "price": 150,
+    "pic": "coffee",
+    "tag": ""
+  },
+  {
+    "id": 122,
+    "cat": "hot",
+    "tr": "Cafe Latte",
+    "en": "Caffè Latte",
+    "ru": "Кафе латте",
+    "price": 150,
+    "pic": "coffee",
+    "tag": ""
+  },
+  {
+    "id": 123,
+    "cat": "hot",
+    "tr": "Bitki Çayları",
+    "en": "Herbal Tea",
+    "ru": "Травяной чай",
+    "price": 100,
+    "pic": "coffee",
+    "tag": ""
+  }
+]
