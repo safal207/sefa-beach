@@ -1,0 +1,66 @@
+name: Sefa Beach Pages deployment
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: sefa-beach-pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Validate and stage static demo
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import csv, json, pathlib, shutil
+          root = pathlib.Path('.')
+          menu = json.loads((root/'menu-baseline.json').read_text(encoding='utf-8'))
+          assert len(menu) == 123 and len({item['id'] for item in menu}) == 123
+          for name in ('index.html', 'revenue-dashboard-local.html'):
+              html = (root/name).read_text(encoding='utf-8')
+              assert '</html>' in html.lower(), name
+          with (root/'sales-lines-template.csv').open(encoding='utf-8', newline='') as f:
+              rows = list(csv.reader(f))
+          assert len(rows) == 1 and rows[0][0] == 'order_id', 'Never publish real sales data'
+          assert 'noindex,nofollow' in (root/'index.html').read_text(encoding='utf-8')
+          public = root/'_site'
+          public.mkdir(exist_ok=True)
+          for name in ('index.html', 'revenue-dashboard-local.html', 'menu-baseline.json', 'sales-lines-template.csv', '.nojekyll'):
+              shutil.copyfile(root/name, public/name)
+          PY
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Verify live demo and dashboard
+        shell: bash
+        env:
+          SITE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          base="${SITE_URL%/}"
+          curl --fail --location --retry 8 --retry-all-errors --retry-delay 5 --max-time 20 "$base/" -o /tmp/sefa-index.html
+          grep -qi 'Sefa Beach' /tmp/sefa-index.html
+          grep -q 'quickOptions' /tmp/sefa-index.html
+          curl --fail --location --retry 8 --retry-all-errors --retry-delay 5 --max-time 20 "$base/revenue-dashboard-local.html" -o /tmp/sefa-revenue.html
+          grep -qi 'Sefa' /tmp/sefa-revenue.html
