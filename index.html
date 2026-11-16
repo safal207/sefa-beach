@@ -40,6 +40,7 @@ body.dark{color-scheme:dark;--ink:#ecf5ed;--muted:#abbbb4;--bg:#102729;--cream:#
 @media(prefers-reduced-motion:reduce){.quick-option{transition:none}.quick-option:hover{transform:none}}
 body.dark .quick-choices{background:#173f3c;border-color:#2c5956}body.dark .quick-option{background:#183936;color:#eaf3f0;border-color:#446962}body.dark .quick-option[aria-pressed="true"]{background:#326c63;color:#fff}
 
+.living-controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:14px;color:var(--ink)}.living-controls label{font-size:12px;font-weight:700}.living-controls select{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;font:inherit;min-width:110px}.living-controls small{flex-basis:100%;color:var(--muted);font-size:11px}.living-controls #periodChoice{margin-right:auto;text-align:left}.living-controls select:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
   </style>
 
 </head>
@@ -82,6 +83,7 @@ body.dark .quick-choices{background:#173f3c;border-color:#2c5956}body.dark .quic
       <div class="quick-choices" aria-labelledby="quickTitle">
         <div class="quick-intro"><strong id="quickTitle">Что хочется сегодня?</strong><small id="quickSubtitle">Один выбор — и нужные блюда уже перед вами</small></div>
         <div class="quick-options" id="quickOptions"></div>
+        <div class="living-controls"><button id="periodChoice" type="button" class="quick-option" hidden></button><label for="budgetChoice" id="budgetLabel">Цена за позицию</label><select id="budgetChoice" aria-describedby="budgetHint"><option value="0">Все цены</option><option value="300">≤ 300 ₺</option><option value="500">≤ 500 ₺</option><option value="800">≤ 800 ₺</option></select><small id="budgetHint"></small></div>
       </div>
       <div class="menu-controls"><label class="searchbox"><span>⌕</span><input id="searchInput" type="search" autocomplete="off" placeholder="Найти блюдо, напиток или ингредиент…" aria-label="Поиск по меню" /><button id="clearSearch" hidden aria-label="Очистить поиск">×</button></label><button id="favoritesOnly" class="chip-filter" aria-pressed="false"><span>♡</span><span data-i18n="favorites">Избранное</span></button></div>
       <div class="category-wrapper" id="catWrapper"><div class="categories" id="categories" aria-label="Категории"></div></div>
@@ -115,7 +117,7 @@ window.SEFA_MENU = [{"id":1,"cat":"breakfast","tr":"Serpme Kahvaltı","en":"Brea
   const $$=(s,root=document)=>Array.from(root.querySelectorAll(s));
   const store={get(k,defaultVal){try{const v=localStorage.getItem('sefa:'+k);return v===null?defaultVal:JSON.parse(v)}catch{return defaultVal}},put(k,v){try{localStorage.setItem('sefa:'+k,JSON.stringify(v))}catch{}}};
   const browserLang=(navigator.language||'tr').toLowerCase();const defaultLang=browserLang.startsWith('ru')?'ru':browserLang.startsWith('en')?'en':'tr';
-  const state={lang:store.get('lang',defaultLang),theme:store.get('theme','light'),mode:store.get('mode','feed'),cat:'all',search:'',favoritesOnly:false,cart:store.get('cart',{}),favorites:store.get('favorites',[]),detailId:null,visibleCount:12};
+  const state={lang:store.get('lang',defaultLang),theme:store.get('theme','light'),mode:store.get('mode','feed'),cat:'all',search:'',favoritesOnly:false,cart:store.get('cart',{}),favorites:store.get('favorites',[]),detailId:null,visibleCount:12,budget:0};
   if(!['ru','en','tr'].includes(state.lang))state.lang='ru';
   if(!['feed','grid','list'].includes(state.mode))state.mode='feed';
   const cats=[
@@ -157,8 +159,34 @@ window.SEFA_MENU = [{"id":1,"cat":"breakfast","tr":"Serpme Kahvaltı","en":"Brea
   function priceHtml(item){return item.price===null?`<span class="price price-unknown">${safe(txt('confirmPrice'))}</span>`:`<span class="price">${money(item.price)}</span>`}
   function persist(){store.put('cart',state.cart);store.put('favorites',state.favorites);store.put('lang',state.lang);store.put('theme',state.theme);store.put('mode',state.mode)}
   function selectCat(cat){state.cat=cat;state.visibleCount=12;state.favoritesOnly=false;$('#favoritesOnly').classList.remove('active');$('#favoritesOnly').setAttribute('aria-pressed','false');renderCategories();renderQuick();renderMenu();$('#catWrapper').scrollIntoView({behavior:'smooth',block:'start'});}
+  function livingPeriod(hour){return hour>=6&&hour<11?'morning':hour>=11&&hour<17?'afternoon':hour>=17&&hour<23?'evening':'all'}
+  function livingBudget(items,limit){return !limit?items:items.filter(x=>Number.isFinite(x.price)&&x.price<=limit)}
+  function livingSuggestions(items,entries,max=3){
+  const taken=new Set(entries.map(x=>x.item.id));
+  const cats=new Set(entries.map(x=>x.item.cat));
+  const beverage=['cold','hot','coffee','shake','frozen'];
+  const hasDrink=beverage.some(c=>cats.has(c));
+  const hasFood=[...cats].some(c=>!beverage.includes(c));
+  const breakfast=['breakfast','omelet','toast'].some(c=>cats.has(c));
+  const main=['seafood','meat','steak','chicken','mexican'].some(c=>cats.has(c));
+  const casual=['pizza','burger','sandwich','pasta','kids'].some(c=>cats.has(c));
+  if(!entries.length)return [];
+  let pools=[];
+  if(!hasFood){pools=[[21,11,19],[14,23,24]]}
+  else{
+    if(!hasDrink)pools.push(breakfast?[117,118,90,87]:casual?[95,98,89,87]:[95,94,87,98]);
+    if(!cats.has('salad')&&(main||casual))pools.push([23,24]);
+    if(!cats.has('snack')&&(main||casual||breakfast))pools.push(breakfast?[21,19]:[22,21,19]);
+  }
+  const byId=new Map(items.map(x=>[x.id,x]));const result=[];
+  for(const pool of pools){const x=pool.map(id=>byId.get(id)).find(x=>x&&!taken.has(x.id)&&Number.isFinite(x.price)&&x.price>0&&!result.some(y=>y.cat===x.cat));if(x)result.push(x);if(result.length>=max)break}
+  return result;
+}
+  function localPeriod(){try{const hour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Istanbul',hour:'2-digit',hourCycle:'h23'}).format(new Date()));return livingPeriod(hour)}catch{return 'all'}}
+  const livingCopy={ru:{budget:'Цена за позицию',any:'Все цены',hint:'Фильтр исключает позиции без подтверждённой цены из выбранного диапазона. Цены по фото меню, уточняйте у персонала.',morning:'Утро у моря · завтраки',afternoon:'Днём у моря · салаты',evening:'Вечер у моря · рыба'},tr:{budget:'Ürün başına fiyat',any:'Tüm fiyatlar',hint:'Fiyatı belirtilmeyen ürünler seçilen aralıkta gösterilmez. Fotoğraf menüsündeki fiyatları personele teyit ettirin.',morning:'Deniz kenarında sabah · kahvaltı',afternoon:'Öğle · salatalar',evening:'Deniz kenarında akşam · balık'},en:{budget:'Price per item',any:'All prices',hint:'Items without a listed price are excluded from a selected range. Prices are from a photographed menu; confirm with staff.',morning:'Morning by the sea · breakfast',afternoon:'Afternoon by the sea · salads',evening:'Evening by the sea · seafood'}};
+  function renderLiving(){const copy=livingCopy[state.lang];const p=localPeriod();const b=$('#periodChoice');b.hidden=p==='all';b.textContent=copy[p]||'';b.dataset.period=p;$('#budgetLabel').textContent=copy.budget;$('#budgetChoice').options[0].textContent=copy.any;$('#budgetChoice').value=String(state.budget);$('#budgetHint').textContent=copy.hint;}
   function inGroup(item,cat){return cat==='all'||(cat==='popular'&&!!item.tag)||(grouped[cat]||[]).includes(item.cat)}
-  function visibleItems(){let result=data.filter(item=>inGroup(item,state.cat));if(state.favoritesOnly)result=result.filter(item=>state.favorites.includes(item.id));if(state.search){const query=state.search.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();result=result.filter(item=>[item.tr,item.en,item.ru,String(item.id)].join(' ').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().includes(query))}if(state.cat==='all'&&!state.search){const feature=[67,74,63,41,34,30,68,1,45,39,15,77];result.sort((a,b)=>{const aidx=feature.indexOf(a.id),bidx=feature.indexOf(b.id);return (aidx===-1?1000+a.id:aidx)-(bidx===-1?1000+b.id:bidx)})}return result}
+  function visibleItems(){let result=livingBudget(data.filter(item=>inGroup(item,state.cat)),state.budget);if(state.favoritesOnly)result=result.filter(item=>state.favorites.includes(item.id));if(state.search){const query=state.search.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();result=result.filter(item=>[item.tr,item.en,item.ru,String(item.id)].join(' ').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().includes(query))}if(state.cat==='all'&&!state.search){const feature=[67,74,63,41,34,30,68,1,45,39,15,77];result.sort((a,b)=>{const aidx=feature.indexOf(a.id),bidx=feature.indexOf(b.id);return (aidx===-1?1000+a.id:aidx)-(bidx===-1?1000+b.id:bidx)})}return result}
   function badge(item){return ''}
   function imageHtml(item,size=600){return `<img src="${getPhoto(item,size)}" alt="${safe(t(item))} — ${safe(txt('illustrative'))}" loading="lazy" decoding="async" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="photo-placeholder" hidden aria-hidden="true">${emojis[item.pic]||'✳'}</span>`}
   function cardHtml(item){const count=Number(state.cart[item.id]||0),favorite=state.favorites.includes(item.id);return `<article class="menu-card" data-id="${item.id}"><div class="card-image" data-detail="${item.id}" role="button" tabindex="0" aria-label="${safe(t(item))}">${imageHtml(item)}${badge(item)?`<span class="card-badge">${safe(badge(item))}</span>`:''}<button class="favorite-btn ${favorite?'selected':''}" data-fav="${item.id}" aria-label="${safe(txt('favorites'))}" aria-pressed="${favorite}">${favorite?'♥':'♡'}</button></div><div class="card-details"><span class="card-category">${safe((cats.find(c=>grouped[c.id]?.includes(item.cat))||cats[0])[state.lang])}</span><h3 data-detail="${item.id}" role="button" tabindex="0">${safe(t(item))}</h3><div class="secondary-name">${safe(item.tr===t(item)?item.en:item.tr)}</div><div class="card-bottom">${priceHtml(item)}<button class="add-btn ${count?'incart':''}" data-add="${item.id}" aria-label="${safe(txt('add'))}: ${safe(t(item))}" ${item.price==null?'disabled title="Цена уточняется"':''}>${count?`<span class="card-quantity">${count} ✓</span>`:'+'}</button></div></div></article>`}
@@ -177,7 +205,7 @@ window.SEFA_MENU = [{"id":1,"cat":"breakfast","tr":"Serpme Kahvaltı","en":"Brea
   function renderDock(){const qty=totalQty();$('#cartDock').hidden=qty===0;$('#cartQty').textContent=qty;$('#cartCountText').textContent=txt('itemsCount')(qty);$('#cartTotal').textContent=money(totalPrice())}
   function updateCart(id,delta){const item=data.find(x=>x.id===id);if(!item||item.price==null)return;const next=Math.min(50,Math.max(0,(state.cart[id]||0)+delta));if(next)state.cart[id]=next;else delete state.cart[id];persist();renderDock();renderMenu();if($('#cartSheet').classList.contains('open'))renderCart();showToast(delta>0?txt('added'):txt('removed'))}
   function toggleFav(id){state.favorites=state.favorites.includes(id)?state.favorites.filter(x=>x!==id):[...state.favorites,id];persist();renderMenu()}
-  function suggestionItems(){const taken=new Set(Object.keys(state.cart).filter(id=>Number(state.cart[id])>0).map(Number));const current=cartEntries().map(x=>x.item.cat);let choices;if(current.some(c=>['breakfast','omelet','toast'].includes(c)))choices=[99,98,95,87];else if(current.some(c=>['seafood','meat','steak','chicken'].includes(c)))choices=[23,98,95,87];else if(current.some(c=>['pizza','burger','sandwich','mexican','pasta'].includes(c)))choices=[89,95,23,87];else if(current.every(c=>['coffee','hot','cold','shake','frozen'].includes(c)))choices=[21,16,22,19];else choices=[95,23,98,87];return choices.map(id=>data.find(x=>x.id===id)).filter(x=>x&&!taken.has(x.id)&&Number.isFinite(x.price)).slice(0,3)}
+  function suggestionItems(){return livingSuggestions(data,cartEntries())}
   function renderCart(){const entries=cartEntries();$('#cartItems').innerHTML=entries.length?entries.map(({item,count})=>`<div class="cart-entry"><div class="cart-entry-photo">${emojis[item.pic]||'✳'}</div><div class="cart-entry-info"><strong>${safe(t(item))}</strong><small>${safe(item.tr)}</small><div class="qty-stepper"><button data-step="-1" data-id="${item.id}" aria-label="Уменьшить">−</button><span>${count}</span><button data-step="1" data-id="${item.id}" aria-label="Увеличить">+</button></div></div><div class="cart-entry-total">${money(item.price*count)}</div></div>`).join(''):`<p style="text-align:center;padding:30px 0;color:var(--muted)">${safe(txt('empty'))}</p>`;$('#footerTotal').textContent=money(totalPrice());let suggestions=suggestionItems();$('#upsell').hidden=!entries.length||!suggestions.length;$('#upsellItems').innerHTML=suggestions.map(item=>`<div class="upsell-card">${imageHtml(item,310)}<div><strong>${safe(t(item))}</strong><button data-upsell="${item.id}">+ ${money(item.price)}</button></div></div>`).join('');}
   let activeSheet=null;let priorFocus=null;
   function openSheet(name){priorFocus=document.activeElement;activeSheet=name;$('#overlay').hidden=false;const sheet=$('#'+name);sheet.classList.add('open');sheet.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';(sheet.querySelector('button[data-close]')||sheet.querySelector('button')).focus()}
@@ -187,9 +215,9 @@ window.SEFA_MENU = [{"id":1,"cat":"breakfast","tr":"Serpme Kahvaltı","en":"Brea
   let toastTimer;
   function showToast(str){const toast=$('#toast');toast.textContent=str;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2500)}
   function applyTheme(){document.body.classList.toggle('dark',state.theme==='dark');$('#themeIcon').textContent=state.theme==='dark'?'☀':'☾';document.querySelector('meta[name="theme-color"]').content=state.theme==='dark'?'#102729':'#103d43'}
-  function translate(){document.documentElement.lang=state.lang;$('#langSwitch').innerHTML=state.lang.toUpperCase()+' <span>⌄</span>';$$('[data-i18n]').forEach(el=>{const val=txt(el.dataset.i18n);if(el.dataset.i18n==='aboutTitle')el.innerHTML=val;else el.textContent=val});$('#searchInput').placeholder=txt('findPlaceholder');$('#orderNotes').placeholder=txt('notePlaceholder');renderCategories();renderQuick();renderMenu();renderDock();if($('#cartSheet').classList.contains('open'))renderCart()}
+  function translate(){document.documentElement.lang=state.lang;$('#langSwitch').innerHTML=state.lang.toUpperCase()+' <span>⌄</span>';$$('[data-i18n]').forEach(el=>{const val=txt(el.dataset.i18n);if(el.dataset.i18n==='aboutTitle')el.innerHTML=val;else el.textContent=val});$('#searchInput').placeholder=txt('findPlaceholder');$('#orderNotes').placeholder=txt('notePlaceholder');renderCategories();renderQuick();renderLiving();renderMenu();renderDock();if($('#cartSheet').classList.contains('open'))renderCart()}
   document.addEventListener('click',e=>{
-    const quick=e.target.closest('[data-quick]');if(quick){selectCat(quick.dataset.quick);return}
+    const quick=e.target.closest('[data-quick]');if(quick){state.search='';$('#searchInput').value='';selectCat(quick.dataset.quick);return}
     const category=e.target.closest('[data-cat]');if(category){selectCat(category.dataset.cat);return}
     const favorite=e.target.closest('[data-fav]');if(favorite){e.stopPropagation();toggleFav(Number(favorite.dataset.fav));return}
     const add=e.target.closest('[data-add]');if(add){updateCart(Number(add.dataset.add),1);return}
@@ -202,9 +230,11 @@ window.SEFA_MENU = [{"id":1,"cat":"breakfast","tr":"Serpme Kahvaltı","en":"Brea
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-detail][role="button"]')){e.preventDefault();openDetail(Number(e.target.dataset.detail))}});
   $('#overlay').addEventListener('click',closeSheet);
   $('#heroExplore').addEventListener('click',()=>$('#menu').scrollIntoView({behavior:'smooth',block:'start'}));
+  $('#periodChoice').addEventListener('click',()=>{const p=$('#periodChoice').dataset.period;const cat={morning:'breakfast',afternoon:'salad',evening:'seafood'}[p];if(!cat)return;state.search='';$('#searchInput').value='';selectCat(cat)});
+  $('#budgetChoice').addEventListener('change',e=>{state.budget=Number(e.target.value)||0;state.visibleCount=12;renderMenu()});
   $('#searchInput').addEventListener('input',e=>{state.search=e.target.value.trim();state.visibleCount=12;renderMenu()});
   $('#clearSearch').addEventListener('click',()=>{state.search='';state.visibleCount=12;$('#searchInput').value='';renderMenu();$('#searchInput').focus()});
-  $('#resetFilter').addEventListener('click',()=>{state.search='';$('#searchInput').value='';selectCat('all')});
+  $('#resetFilter').addEventListener('click',()=>{state.budget=0;renderLiving();state.search='';$('#searchInput').value='';selectCat('all')});
   $('#favoritesOnly').addEventListener('click',()=>{state.visibleCount=12;state.favoritesOnly=!state.favoritesOnly;$('#favoritesOnly').classList.toggle('active',state.favoritesOnly);$('#favoritesOnly').setAttribute('aria-pressed',String(state.favoritesOnly));renderMenu()});
   $$('.layout-switch button').forEach(b=>b.addEventListener('click',()=>{state.mode=b.dataset.mode;persist();renderMenu()}));
   $('#loadMore').addEventListener('click',()=>{state.visibleCount+=12;renderMenu()});
