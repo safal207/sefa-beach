@@ -31,6 +31,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
           printf 'head=%s\nnode=%s\n' "$EXPECTED_SHA" "$(node --version)" > evidence/run.txt
           node --test tests/*.test.mjs 2>&1 | tee evidence/logic.log
+          python3 -m unittest discover -s tests -p 'test_*.py' 2>&1 | tee evidence/pages-contract.log
       - name: Upload exact-head logic evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
