@@ -37,10 +37,13 @@ jobs:
           with (root/'sales-lines-template.csv').open(encoding='utf-8', newline='') as f:
               rows = list(csv.reader(f))
           assert len(rows) == 1 and rows[0][0] == 'order_id', 'Never publish real sales data'
+          with (root/'sales-context-template.csv').open(encoding='utf-8', newline='') as f:
+              context = list(csv.reader(f))
+          assert len(context) == 1 and context[0] == rows[0] + ['service_date', 'service_hour', 'service_zone'], 'Context template must never contain actual sales data'
           assert 'noindex,nofollow' in (root/'index.html').read_text(encoding='utf-8')
           public = root/'_site'
           public.mkdir(exist_ok=True)
-          for name in ('index.html', 'revenue-dashboard-local.html', 'menu-baseline.json', 'sales-lines-template.csv', '.nojekyll'):
+          for name in ('index.html', 'revenue-dashboard-local.html', 'menu-baseline.json', 'sales-lines-template.csv', 'sales-context-template.csv', '.nojekyll'):
               shutil.copyfile(root/name, public/name)
           PY
       - name: Configure Pages
