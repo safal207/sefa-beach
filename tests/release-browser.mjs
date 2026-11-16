@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
-import {chromium} from 'playwright';
+import {chromium,webkit} from 'playwright';
+import {mkdir} from 'node:fs/promises';
+import {join} from 'node:path';
 import {createServer} from 'node:http';
 import {readFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
@@ -14,14 +16,30 @@ const server=createServer(async(req,res)=>{
 });
 await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
 const base='http://127.0.0.1:'+server.address().port;
-const browser=await chromium.launch({headless:true});
+const engine=process.env.SEFA_BROWSER||'chromium';
+const drivers={chromium,webkit};
+if(!Object.hasOwn(drivers,engine))throw Error('Unsupported browser: '+engine);
+const evidence=process.env.SEFA_EVIDENCE_DIR;
+if(evidence)await mkdir(evidence,{recursive:true});
+const browser=await drivers[engine].launch({headless:true});
+console.log('Browser '+engine+' '+browser.version());
 const check=async(name,fn)=>{await fn();console.log('PASS '+name)};
 async function session(width){
   const context=await browser.newContext({viewport:{width,height:850},locale:'en-US',timezoneId:'Europe/Istanbul',reducedMotion:'reduce'});
   await context.route('**/*',route=>route.request().url().startsWith(base+'/')?route.continue():route.abort());
+  if(evidence)await context.tracing.start({screenshots:true,snapshots:true,sources:true});
   const page=await context.newPage(),errors=[];
+  page.setDefaultTimeout(15000);
   page.on('pageerror',err=>errors.push(String(err)));
   return {context,page,errors};
+}
+async function finishSession(context,page,label){
+  try{
+    if(evidence){
+      try{await page.screenshot({path:join(evidence,label+'.png'),timeout:8000})}catch(e){console.error('Screenshot capture failed: '+e.message)}
+      try{await context.tracing.stop({path:join(evidence,label+'.zip')})}catch(e){console.error('Trace capture failed: '+e.message)}
+    }
+  }finally{await context.close()}
 }
 const cardCount=p=>p.locator('#menuContent .menu-card').count();
 const waitCards=(p,n)=>p.waitForFunction(n=>document.querySelectorAll('#menuContent .menu-card').length===n,n);
@@ -57,7 +75,7 @@ try{
      await p.locator('#langSwitch').click();assert.equal(await p.locator('html').getAttribute('lang'),'tr');
    });
    await check(width+' viewport and runtime integrity',async()=>{assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));assert.deepEqual(errors,[])});
-  }finally{await context.close()}
+  }finally{await finishSession(context,p,'guest-'+width)}
  }
  const {context,page:p,errors}=await session(390);
  try{
@@ -107,5 +125,5 @@ try{
    assert.equal(await p.locator('#journal-add').isDisabled(),true);
   });
   await check('owner: mobile viewport and runtime integrity',async()=>{assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));assert.deepEqual(errors,[])});
- }finally{await context.close()}
+ }finally{await finishSession(context,p,'owner-390')}
 }finally{await browser.close();await new Promise(resolve=>server.close(resolve))}

@@ -16,18 +16,24 @@ concurrency:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
       - name: Validate and stage static demo
         shell: bash
         run: |
           python3 - <<'PY'
-          import csv, json, pathlib, shutil
+          import csv, hashlib, json, os, pathlib, shutil, subprocess
+          assert subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip() == os.environ['GITHUB_SHA']
           root = pathlib.Path('.')
           menu = json.loads((root/'menu-baseline.json').read_text(encoding='utf-8'))
           assert len(menu) == 123 and len({item['id'] for item in menu}) == 123
@@ -45,6 +51,9 @@ jobs:
           public.mkdir(exist_ok=True)
           for name in ('index.html', 'revenue-dashboard-local.html', 'menu-baseline.json', 'sales-lines-template.csv', 'sales-context-template.csv', '.nojekyll'):
               shutil.copyfile(root/name, public/name)
+          assets = sorted(p for p in public.iterdir() if p.is_file() and not p.name.startswith('.'))
+          manifest = {'schema': 'sefa-release-v1', 'commit': os.environ['GITHUB_SHA'], 'files': {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in assets}}
+          (public/'release-manifest.json').write_text(json.dumps(manifest, sort_keys=True, indent=2)+'\n', encoding='utf-8')
           PY
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -55,15 +64,19 @@ jobs:
       - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
-      - name: Verify live demo and dashboard
+      - name: Verify exact published release
         shell: bash
         env:
           SITE_URL: ${{ steps.deployment.outputs.page_url }}
         run: |
-          set -euo pipefail
-          base="${SITE_URL%/}"
-          curl --fail --location --retry 8 --retry-all-errors --retry-delay 5 --max-time 20 "$base/" -o /tmp/sefa-index.html
-          grep -qi 'Sefa Beach' /tmp/sefa-index.html
-          grep -q 'quickOptions' /tmp/sefa-index.html
-          curl --fail --location --retry 8 --retry-all-errors --retry-delay 5 --max-time 20 "$base/revenue-dashboard-local.html" -o /tmp/sefa-revenue.html
-          grep -qi 'Sefa' /tmp/sefa-revenue.html
+          python3 scripts/verify-pages.py --site "$SITE_URL" --manifest _site/release-manifest.json --report pages-evidence.json
+      - name: Archive deployment evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pages-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            _site/release-manifest.json
+            pages-evidence.json
+          retention-days: 14
+          if-no-files-found: warn
