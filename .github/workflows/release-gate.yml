@@ -1,0 +1,24 @@
+name: Sefa Beach v3 release gate
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: All deterministic tests
+        run: node --test tests/*.test.mjs
+      - name: Install browser driver
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Cross-module browser regression
+        run: node tests/release-browser.mjs
