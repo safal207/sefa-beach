@@ -1,0 +1,27 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+
+const html = fs.readFileSync(new URL('../revenue-dashboard-local.html', import.meta.url), 'utf8');
+const start = html.indexOf('function parseSalesCSV(');
+const end = html.indexOf('const $=id=>', start);
+assert.ok(start >= 0 && end > start, 'Dashboard core must be extractable');
+const {parseSalesCSV, salesNumber, summarizeSales, menuDecisions} = vm.runInNewContext(html.slice(start,end) + '\n({parseSalesCSV, salesNumber, summarizeSales, menuDecisions})');
+const header = 'order_id,item_id,qty,paid_unit_price_try,unit_food_cost_try,unit_packaging_cost_try,discount_try,payment_fee_try,refund_try';
+const catalog = {1:'A',2:'B',3:'C',4:'D'};
+const fixture = header+'\n'+Array.from({length:12},(_,i)=>`o${i},${i%4+1},${i%4+1},100,${(i%4)*20+10},0,0,0,0`).join('\n');
+const full = summarizeSales(fixture,catalog);
+test('12 unique receipts',()=>{assert.equal(full.orders,12);assert.equal(full.valid,12)});
+test('synthetic revenue and contribution reconcile',()=>{assert.equal(full.revenue,3000);assert.equal(full.contribution,1500)});
+test('relative thresholds',()=>{const d=menuDecisions(full);assert.equal(d.ready,true);assert.equal(d.qtyMedian,7.5);assert.equal(d.unitMedian,60)});
+test('one decision per observed item',()=>assert.equal(menuDecisions(full).rows.length,4));
+test('small sample blocks decisions',()=>assert.equal(menuDecisions(summarizeSales(header+'\na,1,1,100,20,0,0,0,0',catalog)).ready,false));
+test('missing costs block decisions',()=>{const s=summarizeSales(fixture+'\nx,1,1,100,,0,0,0,0',catalog);assert.equal(s.unknown,1);assert.equal(menuDecisions(s).ready,false)});
+test('refunds block quantity decisions',()=>{const s=summarizeSales(fixture+'\nx,1,1,100,20,0,0,0,20',catalog);assert.equal(s.refunds,20);assert.equal(menuDecisions(s).ready,false)});
+test('prototype keys are not catalog IDs',()=>{const s=summarizeSales(fixture+'\nx,__proto__,1,100,20,0,0,0,0',catalog);assert.equal(s.errors.length,1);assert.equal(menuDecisions(s).ready,false)});
+test('malformed row is rejected',()=>assert.equal(summarizeSales(fixture+'\nx,1,2',catalog).errors.length,1));
+test('no hidden number coercion',()=>{assert.equal(salesNumber('0x10'),null);assert.equal(salesNumber(''),null);assert.equal(salesNumber('0'),0)});
+test('quoted CSV and escaped quotes',()=>assert.equal(parseSalesCSV('a,b\r\n"x,y","a""b"\r\n')[1].join('|'),'x,y|a"b'));
+test('unclosed quote rejects import',()=>assert.throws(()=>parseSalesCSV('a,b\n"x,y')));
+test('duplicate header rejects import',()=>assert.throws(()=>summarizeSales(header+',order_id\n',catalog)));
