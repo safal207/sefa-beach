@@ -8,14 +8,16 @@ import {fileURLToPath} from 'node:url';
 
 const root=new URL('../',import.meta.url);
 const files={'/':'index.html','/revenue-dashboard-local.html':'revenue-dashboard-local.html','/sales-context-template.csv':'sales-context-template.csv'};
-const server=createServer(async(req,res)=>{
+const liveBase=process.env.SEFA_BASE_URL?.replace(/\/+$/,'')||null;
+if(liveBase&&!/^https:\/\/[a-z0-9.-]+(?:\/[a-z0-9_./-]*)?$/i.test(liveBase))throw Error('Live base must be a plain HTTPS URL');
+const server=liveBase?null:createServer(async(req,res)=>{
   const path=files[new URL(req.url,'http://localhost').pathname];
   if(!path){res.writeHead(404);res.end();return}
   try{res.setHeader('Content-Type',path.endsWith('.csv')?'text/csv; charset=utf-8':'text/html; charset=utf-8');res.end(await readFile(fileURLToPath(new URL(path,root))))}
   catch{res.writeHead(500);res.end()}
 });
-await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
-const base='http://127.0.0.1:'+server.address().port;
+if(server)await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+const base=liveBase||'http://127.0.0.1:'+server.address().port;
 const engine=process.env.SEFA_BROWSER||'chromium';
 const drivers={chromium,webkit};
 if(!Object.hasOwn(drivers,engine))throw Error('Unsupported browser: '+engine);
@@ -126,4 +128,4 @@ try{
   });
   await check('owner: mobile viewport and runtime integrity',async()=>{assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));assert.deepEqual(errors,[])});
  }finally{await finishSession(context,p,'owner-390')}
-}finally{await browser.close();await new Promise(resolve=>server.close(resolve))}
+}finally{await browser.close();if(server)await new Promise(resolve=>server.close(resolve))}

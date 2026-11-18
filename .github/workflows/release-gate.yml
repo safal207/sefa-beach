@@ -1,7 +1,7 @@
 name: Sefa Beach v3 release gate
 on:
   pull_request:
-    branches: [main, 'release/**']
+    branches: [main, 'release/**', 'ci/**']
   workflow_dispatch:
 permissions:
   contents: read

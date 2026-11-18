@@ -1,0 +1,46 @@
+name: Sefa public-demo security boundaries
+on:
+  pull_request:
+    branches: [main, 'release/**', 'ci/**']
+    paths:
+      - 'index.html'
+      - 'revenue-dashboard-local.html'
+      - 'sales-*.csv'
+      - 'scripts/audit-demo-boundary.py'
+      - 'tests/test_demo_boundary.py'
+      - '.github/workflows/security-boundary.yml'
+  schedule:
+    - cron: '37 4 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: sefa-boundary-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  boundary:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    env:
+      EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.EXPECTED_SHA }}
+          persist-credentials: false
+      - name: Validate guest and owner prototype boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/security
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          python3 scripts/audit-demo-boundary.py 2>&1 | tee .artifacts/security/boundary.txt
+          python3 -m unittest discover -s tests -p 'test_demo_boundary.py' 2>&1 | tee .artifacts/security/negative-controls.txt
+      - name: Preserve security gate proof
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: demo-boundary-${{ env.EXPECTED_SHA }}-${{ github.run_id }}
+          path: .artifacts/security/
+          retention-days: 30
+          if-no-files-found: warn
