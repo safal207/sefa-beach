@@ -1,0 +1,69 @@
+name: Sefa live integrity and customer journeys
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '23 5 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: sefa-live-main
+  cancel-in-progress: true
+jobs:
+  integrity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Verify exact live Pages bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/live
+          python3 scripts/monitor-live.py --site https://safal207.github.io/sefa-beach/ --report .artifacts/live/integrity.json 2>&1 | tee .artifacts/live/integrity.log
+      - name: Preserve live evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: live-integrity-${{ github.run_id }}
+          path: .artifacts/live/
+          retention-days: 30
+          if-no-files-found: warn
+  journey:
+    needs: integrity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SEFA_BROWSER: chromium
+      SEFA_BASE_URL: https://safal207.github.io/sefa-beach
+      SEFA_EVIDENCE_DIR: .artifacts/live/browser
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save --package-lock=false playwright@1.56.1
+          npx --no-install playwright install --with-deps chromium
+      - name: Published guest and owner smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/live
+          node tests/release-browser.mjs 2>&1 | tee .artifacts/live/journey.log
+      - name: Archive live browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: live-journey-${{ github.run_id }}
+          path: .artifacts/live/
+          retention-days: 14
+          if-no-files-found: warn
